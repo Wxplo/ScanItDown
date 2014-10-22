@@ -113,6 +113,38 @@ int segletter(SDL_Surface *img,struct line line, struct letter *letter_tab, int 
 	return 0;
 
 }
+int segblocY (SDL_Surface *img, struct blocY *bloc_tab,int bloc_tabsize)
+{
+	int x,y;
+	int onBlocy = 0;
+	for(x=0 ; x<=img->w ; x++)
+        {
+                //Parcour l'image en width, si pixel = blanc,continue, sinon
+                for (y=0;
+                     	(  getpix(img,x,y)==SDL_MapRGB(img->format,255,255,255))
+			&& (getpix(img,x+3,y)==SDL_MapRGB(img->format,255,255,255))
+			&& (y< img->h);
+                                y++);
+		if(onBlocy==0 && y!= img ->h)
+		{
+			DrawColumn(img,x,0,img->h);
+			onBlocy=1;
+			bloc_tab[bloc_tabsize].yb=y;
+			
+		}
+		if((y==img->h) && onBlocy==1)
+		{
+			DrawColumn(img,x,0,img->h);
+			onBlocy =0;
+			bloc_tab[bloc_tabsize].ye=y;
+			bloc_tabsize++;
+		}
+
+		
+	}
+	return 0;
+
+}
 int main(int argc, char **argv)
 {
 	//Variable
@@ -120,13 +152,19 @@ int main(int argc, char **argv)
 	char filename_out[256];
 	SDL_Surface *scr, *bmp;
 //-----------------pour segline
-	int size=1;
+	int size=0;
 	int *sizetab=&(size);
 	struct line line_tab[100];
-	struct line p;
-	line_tab[0]=p;
+//	struct line p;
+//	line_tab[0]=p;
 //----------------pour segletter
 	struct letter letter_tab[100];
+//---------------------pour segBlocy
+	struct blocY blocY_tab[100];
+
+
+
+
 
 	/*Renseigne le nom de l'image*/
 	printf("\nEntrez le nom du fichier BMP : ");
@@ -144,13 +182,13 @@ int main(int argc, char **argv)
 
 	//  grayscale(bmp);
 	binarisation(bmp);
-	segline(bmp,line_tab,sizetab);
-//	segletter(bmp,line_tab[1]);
-	for(int i =1; i <size; i++)
+/*	segline(bmp,line_tab,sizetab);
+	
+	for(int i =0; i <size; i++)
 	{	
 	segletter(bmp,line_tab[i],letter_tab,sizetab);
-	}
-//	DrawColumn(bmp, 50,line_tab[1].yb,line_tab[1].ye);
+	}*/
+	segblocY(bmp,blocY_tab,0);
 	SDL_SaveBMP(bmp,filename_out);
 	SDL_BlitSurface(bmp, 0, scr, 0);
 	SDL_Flip(scr);
