@@ -50,7 +50,7 @@ void grayscale(SDL_Surface *s)
 }
 
 */
-int segline(SDL_Surface *img,struct line *line_tab,int sizetab )
+int segline(SDL_Surface *img,struct line *line_tab,int *sizetab )
 {
 	//Variable
 	int x,y ;
@@ -65,21 +65,53 @@ int segline(SDL_Surface *img,struct line *line_tab,int sizetab )
 		
 		if(x!= img ->w && onLine==0) //Début de ligne,n'a pas fini de parcourir, et a recontré un pixel noir
 			{
-				DrawLine(img,y);
+				DrawLine(img,y-1);
 				onLine = 1; //on est sur une ligne
-				line_tab[sizetab].yb= y-1;
+				line_tab[*sizetab].yb= y-1;
 			}
 
 		if(x== img ->w && onLine==1)
 		{
 			DrawLine(img,y);
 			onLine = 0 ;
-			line_tab[sizetab].ye=y;
-			sizetab=sizetab+ 1;
+			line_tab[*sizetab].ye=y;
+			*sizetab=*sizetab+ 1;
 		}
 		
 	}
 	return 0;
+}
+void DrawColumn(SDL_Surface *img, int beginx, int beginy,int end)
+{
+	int y; 
+	for (y=beginy; y< end;y++)
+        putpix(img,beginx,y , SDL_MapRGB(img->format, 0,250,0));
+}
+int segletter(SDL_Surface *img,struct line line, struct letter *letter_tab, int *sizetab)
+{
+	int x,y ;
+	int i ;
+	int onLetter=0;
+	printf("segline s'est lancé\n");
+	for(x=0 ; x <img->w; x++)
+	{
+		for (y=line.yb +1;
+			 (getpix(img,x,y)==SDL_MapRGB(img->format,255,255,255)) && (y< line.ye);
+			 y++);
+		if(onLetter==0 && y!= line.ye)
+		{	
+			DrawColumn(img,x,line.yb,line.ye);
+			onLetter=1;	
+		}
+		if((onLetter==1) &&(y ==line.ye))
+		{
+			DrawColumn(img,x,line.yb,line.ye);
+			onLetter =0;
+		}
+	}
+
+	return 0;
+
 }
 int main(int argc, char **argv)
 {
@@ -87,15 +119,16 @@ int main(int argc, char **argv)
 	char filename_in[256];
 	char filename_out[256];
 	SDL_Surface *scr, *bmp;
-	//pour segline
+//-----------------pour segline
 	int size=1;
-//	int *sizetab=&(size);
+	int *sizetab=&(size);
 	struct line line_tab[100];
 	struct line p;
-	p.yb=0;
-	p.ye=bmp->h;
 	line_tab[0]=p;
-	/*Rensigne le nom de l'image*/
+//----------------pour segletter
+	struct letter letter_tab[100];
+
+	/*Renseigne le nom de l'image*/
 	printf("\nEntrez le nom du fichier BMP : ");
 	fgets(filename_in, sizeof filename_in, stdin);
 	filename_in[strlen(filename_in) - 1] = 0;
@@ -108,16 +141,19 @@ int main(int argc, char **argv)
 		return 1;
 	if(!(scr = SDL_SetVideoMode(800, 600, 32, SDL_HWSURFACE)))
 		return 2;
-	/*  if(!(bmp = SDL_LoadBMP("bird.bmp")))
-	    return 3;*/
 
 	//  grayscale(bmp);
 	binarisation(bmp);
-	segline(bmp,line_tab,size);
+	segline(bmp,line_tab,sizetab);
+//	segletter(bmp,line_tab[1]);
+	for(int i =1; i <size; i++)
+	{	
+	segletter(bmp,line_tab[i],letter_tab,sizetab);
+	}
+//	DrawColumn(bmp, 50,line_tab[1].yb,line_tab[1].ye);
 	SDL_SaveBMP(bmp,filename_out);
 	SDL_BlitSurface(bmp, 0, scr, 0);
 	SDL_Flip(scr);
-
 
 	while(1) {
 		SDL_Event e;
