@@ -16,18 +16,28 @@ int xe;
 };
 struct blocY
 {
-int yb;
-int ye;
+int xb;
+int xe;
 };
 struct blocX
 {
+int yb;
+int ye;
+};
+struct Bloc
+{
 int xb;
 int xe;
+int yb;
+int ye;
 };
 
 int segline(SDL_Surface *img,struct line *line_tab,int *sizetab );
 int segletter(SDL_Surface *img,struct line line, struct letter *letter_tab, int *sizetab);
 int segblocY (SDL_Surface *img, struct blocY *blocY_tab,int bloc_tabsize);
+int segblocX (SDL_Surface *img, struct blocX *blocX_tab,int bloc_tabsize);
+int segBloc(SDL_Surface *img, struct blocX *blocX_tab,int sizeblocX, struct blocY *blocY_tab,int sizeblocY, struct Bloc *Bloc_tab, int bloc_tabsize);
+
 //int segletter(SDL_Surface *img,struct line line);
 
 #endif

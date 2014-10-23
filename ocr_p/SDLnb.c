@@ -87,6 +87,20 @@ void DrawColumn(SDL_Surface *img, int beginx, int beginy,int end)
 	for (y=beginy; y< end;y++)
         putpix(img,beginx,y , SDL_MapRGB(img->format, 0,250,0));
 }
+void DrawColumnB(SDL_Surface *img, int beginx, int beginy,int end)
+{
+        int y;
+        for (y=beginy; y< end;y++)
+        putpix(img,beginx,y , SDL_MapRGB(img->format, 255,0,0));
+}
+
+void DrawLineB(SDL_Surface *img, int beginx, int beginy,int end)
+{
+        int x; 
+        for (x=beginx; x< end;x++)
+        putpix(img,x,beginy , SDL_MapRGB(img->format, 255,0,0));
+}
+
 int segletter(SDL_Surface *img,struct line line, struct letter *letter_tab, int *sizetab)
 {
 	int x,y ;
@@ -113,7 +127,7 @@ int segletter(SDL_Surface *img,struct line line, struct letter *letter_tab, int 
 	return 0;
 
 }
-int segblocY (SDL_Surface *img, struct blocY *bloc_tab,int bloc_tabsize)
+int segblocY (SDL_Surface *img, struct blocY *blocY_tab,int bloc_tabsize)
 {
 	int x,y;
 	int onBlocy = 0;
@@ -127,16 +141,16 @@ int segblocY (SDL_Surface *img, struct blocY *bloc_tab,int bloc_tabsize)
                                 y++);
 		if(onBlocy==0 && y!= img ->h)
 		{
-			DrawColumn(img,x,0,img->h);
+		//	DrawColumnB(img,x,0,img->h);
 			onBlocy=1;
-			bloc_tab[bloc_tabsize].yb=y;
+			blocY_tab[bloc_tabsize].xb=x;
 			
 		}
 		if((y==img->h) && onBlocy==1)
 		{
-			DrawColumn(img,x,0,img->h);
+		//	DrawColumnB(img,x,0,img->h);
 			onBlocy =0;
-			bloc_tab[bloc_tabsize].ye=y;
+			blocY_tab[bloc_tabsize].xe=x;
 			bloc_tabsize++;
 		}
 
@@ -144,6 +158,103 @@ int segblocY (SDL_Surface *img, struct blocY *bloc_tab,int bloc_tabsize)
 	}
 	return 0;
 
+}
+
+int segblocX (SDL_Surface *img, struct blocX *blocX_tab,int bloc_tabsize)
+{
+        int x,y;
+        int onBlocx = 0;
+        for(y=0 ; y<=img->h ; y++)
+        {
+                //Parcour l'image en width, si pixel = blanc,continue, sinon
+                for (x=0;
+                        (  getpix(img,x,y)==SDL_MapRGB(img->format,255,255,255))
+                        && (getpix(img,x,y+10)==SDL_MapRGB(img->format,255,255,255))
+                        && (x< img->w);
+                                x++);
+                if(x!= img->w && onBlocx==0 )
+                {
+                     //   DrawLineB(img,0,y,img->w);
+			onBlocx=1;
+                        blocX_tab[bloc_tabsize].yb=y;
+
+                }
+                if(x==img->w && onBlocx==1)
+                {
+                       // DrawLineB(img,0,y,img->w);
+                        onBlocx =0;
+                        blocX_tab[bloc_tabsize].ye=y;
+                        bloc_tabsize++;
+                }
+
+
+        }
+        return 0;
+
+}
+int segBloc(SDL_Surface *img, struct blocX *blocX_tab,int sizeblocX, struct blocY *blocY_tab,int sizeblocY, struct Bloc *Bloc_tab, int bloc_tabsize)
+{
+	int x,y;
+	int i=0;
+	int j;
+	int onBlocx=0;
+	int onBlocy=0;
+	//On commence par les Lignes, on utilise les blocY
+	for(i = 0;i<=2;i++)
+	{
+		//for(y=blocY_tab[i].xb; y<=blocY_tab[i].xe;y++)
+		for(y=0; y<=img->h;y++)
+		{
+			for (x=blocY_tab[i].xb;
+                        (  getpix(img,x,y)==SDL_MapRGB(img->format,255,255,255))
+                        && (getpix(img,x,y+11)==SDL_MapRGB(img->format,255,255,255))
+                        && (x< blocY_tab[i].xe);
+                                x++);
+			if(x!= blocY_tab[i].xe && onBlocx==0)
+			{
+				DrawLineB(img,blocY_tab[i].xb,y,blocY_tab[i].xe);
+				onBlocx=1;
+				Bloc_tab[bloc_tabsize].yb=y;
+			}
+			if(x==blocY_tab[i].xe && onBlocx==1)
+			{
+				DrawLineB(img,blocY_tab[i].xb,y,blocY_tab[i].xe);
+				onBlocx=0;
+				Bloc_tab[bloc_tabsize].ye=y;
+				bloc_tabsize++;
+			}
+		}
+		//On trace les colonnes
+	for(j=0; j<= 2;j++)
+	{
+		for(x=0; x<=img->w;x++)
+		        {
+		                for (y=Bloc_tab[j].yb;
+		                (  getpix(img,x,y)==SDL_MapRGB(img->format,255,255,255))
+		                && (getpix(img,x,y)==SDL_MapRGB(img->format,255,255,255))
+		                && (y< Bloc_tab[j].ye);
+		                        y++);
+		                if(y!= Bloc_tab[j].ye && onBlocy==0)
+		                {
+		                        DrawColumnB(img,x,Bloc_tab[j].yb,Bloc_tab[j].ye);
+		                        onBlocy=1;
+		                        Bloc_tab[j].xb=x;
+		                }
+		                if(y==Bloc_tab[j].ye && onBlocy==1)
+		                {
+					DrawColumnB(img,x,Bloc_tab[j].yb,Bloc_tab[j].ye);
+		                        onBlocy=0;
+					Bloc_tab[j].xe=x;
+		//			bloc_tabsize++;
+				}
+
+			}
+
+
+	}
+		
+		return 0;
+	}
 }
 int main(int argc, char **argv)
 {
@@ -161,10 +272,14 @@ int main(int argc, char **argv)
 	struct letter letter_tab[100];
 //---------------------pour segBlocy
 	struct blocY blocY_tab[100];
+	int sizeblocY=0;
+//---------------------pour segBlocx
+	struct blocX blocX_tab[100];
+	int sizeblocX=0;
 
-
-
-
+//---------------------pour segBloc
+	struct Bloc Bloc_tab[100];
+	int sizeBloc=0;
 
 	/*Renseigne le nom de l'image*/
 	printf("\nEntrez le nom du fichier BMP : ");
@@ -188,7 +303,11 @@ int main(int argc, char **argv)
 	{	
 	segletter(bmp,line_tab[i],letter_tab,sizetab);
 	}*/
-	segblocY(bmp,blocY_tab,0);
+	segblocY(bmp,blocY_tab,sizeblocY);
+	segblocX(bmp,blocX_tab,sizeblocX);
+	segBloc(bmp,blocX_tab,sizeblocX,blocY_tab,sizeblocY,Bloc_tab,0);
+
+//  DrawColumnB(bmp,30,Bloc_tab[0].yb,Bloc_tab[0].ye);
 	SDL_SaveBMP(bmp,filename_out);
 	SDL_BlitSurface(bmp, 0, scr, 0);
 	SDL_Flip(scr);
