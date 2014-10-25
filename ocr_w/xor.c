@@ -23,7 +23,7 @@ for ( int i = 0 ; i < 3; i++) {
 	}
 	if (i == 1) {
 		struct neuron neuron2 = {.threshold = 1, .weight[0] =1.1, .output = 0};
-        	neural [i] = neuron2;
+		neural [i] = neuron2;
         }
 	if (i == 2) {
 		struct neuron neuron3 = {.threshold = 1, .weight[0] =-2, .weight[1] =1.1, .output = 0};

@@ -156,7 +156,7 @@ int segblocY (SDL_Surface *img, struct blocY *blocY_tab,int bloc_tabsize)
 
 		
 	}
-	return 0;
+	return bloc_tabsize;
 
 }
 
@@ -189,7 +189,7 @@ int segblocX (SDL_Surface *img, struct blocX *blocX_tab,int bloc_tabsize)
 
 
         }
-        return 0;
+        return bloc_tabsize;
 
 }
 int segBloc(SDL_Surface *img, struct blocX *blocX_tab,int sizeblocX, struct blocY *blocY_tab,int sizeblocY, struct Bloc *Bloc_tab, int bloc_tabsize)
@@ -212,13 +212,13 @@ int segBloc(SDL_Surface *img, struct blocX *blocX_tab,int sizeblocX, struct bloc
                                 x++);
 			if(x!= blocY_tab[i].xe && onBlocx==0)
 			{
-				DrawLineB(img,blocY_tab[i].xb,y,blocY_tab[i].xe);
+			//	DrawLineB(img,blocY_tab[i].xb,y,blocY_tab[i].xe);
 				onBlocx=1;
 				Bloc_tab[bloc_tabsize].yb=y;
 			}
 			if(x==blocY_tab[i].xe && onBlocx==1)
 			{
-				DrawLineB(img,blocY_tab[i].xb,y,blocY_tab[i].xe);
+			//	DrawLineB(img,blocY_tab[i].xb,y,blocY_tab[i].xe);
 				onBlocx=0;
 				Bloc_tab[bloc_tabsize].ye=y;
 				bloc_tabsize++;
@@ -236,16 +236,17 @@ int segBloc(SDL_Surface *img, struct blocX *blocX_tab,int sizeblocX, struct bloc
 		                        y++);
 		                if(y!= Bloc_tab[j].ye && onBlocy==0)
 		                {
-		                        DrawColumnB(img,x,Bloc_tab[j].yb,Bloc_tab[j].ye);
+		              //          DrawColumnB(img,x,Bloc_tab[j].yb,Bloc_tab[j].ye);
 		                        onBlocy=1;
-		                        Bloc_tab[j].xb=x;
+//-------------------------------------------------------------------------------ICI BLoc_tab non reconnu
+		                        Bloc_tab[0].xb=x;
 		                }
 		                if(y==Bloc_tab[j].ye && onBlocy==1)
 		                {
-					DrawColumnB(img,x,Bloc_tab[j].yb,Bloc_tab[j].ye);
+				//	DrawColumnB(img,x,Bloc_tab[j].yb,Bloc_tab[j].ye);
 		                        onBlocy=0;
-					Bloc_tab[j].xe=x;
-		//			bloc_tabsize++;
+					Bloc_tab[0].xe=x;
+					bloc_tabsize++;
 				}
 
 			}
@@ -255,6 +256,40 @@ int segBloc(SDL_Surface *img, struct blocX *blocX_tab,int sizeblocX, struct bloc
 		
 		return 0;
 	}
+}
+
+int seglineB(SDL_Surface *img,struct line *line_tab,int *sizetab,struct Bloc *Bloc_tab,int bloc_size)
+{
+        int x,y;
+        int i=2;
+        int onLine=0;
+//        for(i=0;i<=2;i++)
+        {
+                for(y=0; y<=img->h;y++)
+                {
+                        for (x=Bloc_tab[i].xb;
+                                        (getpix(img,x,y)==SDL_MapRGB(img->format,255,255,255)) && (x< Bloc_tab[i].xe);
+                                        x++);
+
+                        if(x!=Bloc_tab[i].xe && onLine==0)
+                        {
+                              DrawLineB(img,Bloc_tab[i].xb,y-1,Bloc_tab[i].xe);
+                        //      DrawLine(img,y-1);
+                                onLine =1;
+                                line_tab[*sizetab].yb=y-1;
+
+                        }
+                        if(x ==Bloc_tab[i].xe && onLine==1)
+                        {
+                                DrawLineB(img,Bloc_tab[i].xb,y+1,Bloc_tab[i].xe);
+                        //      DrawLine(img,y+1);
+                                onLine=0;
+                                line_tab[*sizetab].ye=y+1;
+                                *sizetab=*sizetab+1;
+                        }
+                }
+        }
+        return 0;
 }
 int main(int argc, char **argv)
 {
@@ -272,10 +307,10 @@ int main(int argc, char **argv)
 	struct letter letter_tab[100];
 //---------------------pour segBlocy
 	struct blocY blocY_tab[100];
-	int sizeblocY=0;
+	//int sizeblocY=0;
 //---------------------pour segBlocx
 	struct blocX blocX_tab[100];
-	int sizeblocX=0;
+	//int sizeblocX=0;
 
 //---------------------pour segBloc
 	struct Bloc Bloc_tab[100];
@@ -297,15 +332,27 @@ int main(int argc, char **argv)
 
 	//  grayscale(bmp);
 	binarisation(bmp);
-/*	segline(bmp,line_tab,sizetab);
+	segline(bmp,line_tab,sizetab);
 	
 	for(int i =0; i <size; i++)
 	{	
 	segletter(bmp,line_tab[i],letter_tab,sizetab);
-	}*/
-	segblocY(bmp,blocY_tab,sizeblocY);
-	segblocX(bmp,blocX_tab,sizeblocX);
-	segBloc(bmp,blocX_tab,sizeblocX,blocY_tab,sizeblocY,Bloc_tab,0);
+	}
+int sizeblocY=	segblocY(bmp,blocY_tab,0);
+int sizeblocX=	segblocX(bmp,blocX_tab,0);
+//	segBloc(bmp,blocX_tab,sizeblocX,blocY_tab,sizeblocY,Bloc_tab,0);
+
+//	seglineB(bmp,line_tab,sizetab,Bloc_tab,sizeBloc);
+        for(int i =0; i <size; i++)
+        {       
+    //    segletter(bmp,line_tab[i],letter_tab,sizetab);
+        }
+
+
+
+int j =0;
+//DrawColumnB(bmp,25,Bloc_tab[j].yb,Bloc_tab[j].ye);
+//DrawColumnB(bmp,Bloc_tab[0].xe,Bloc_tab[0].yb,Bloc_tab[0].ye);
 
 //  DrawColumnB(bmp,30,Bloc_tab[0].yb,Bloc_tab[0].ye);
 	SDL_SaveBMP(bmp,filename_out);
