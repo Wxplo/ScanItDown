@@ -12,8 +12,10 @@
 #st-panel-1
 {
 	/*background-image: url('http://img15.hostingpics.net/pics/67808560BG.png');*/
-	background-image: url('http://img15.hostingpics.net/pics/238080test.png');
-	background-size: cover;
+	/*background-image: url('http://img15.hostingpics.net/pics/238080test.png');*/
+	background-image: url('images/cover.png');
+	background-size: contain;
+
 	border-bottom: 2px solid grey;
     
 }
@@ -239,7 +241,7 @@ bottom: 100%;
 	font-size: 54px;
 	font-weight: 900;
 	/*width:25%;*/
-	left: 27%;
+	left: 20%;
 	/*text-align: center;*/
 	line-height: 50px;
 	margin: -70px 0 0 0;
