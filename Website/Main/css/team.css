@@ -1,0 +1,11 @@
+html
+{
+	height: 800px;
+	width : 400px;
+	font-family: 'Carrois Gothic SC', sans-serif;
+
+	font-size: 14px;
+	text-align : justify;
+	background-color: grey;
+	color: #000000;
+}
