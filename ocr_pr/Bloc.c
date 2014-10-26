@@ -38,11 +38,11 @@ void Bloc(SDL_Surface *s)
 //	int nb_space = 0;
 	int threshold = 20;
 
-	for(y = 0; y< s->h; y++){
-		for( x = 0; x < s->w; x++){
-			if(myArrayX[x][y] == 1 && myArrayX[x+1][y] == 0){
-				for(i = x+1 ; myArrayX[i][y] == 0 && i< s->w; i++){
-						myArrayX[i][y]= 1;
+for(y = 0; y< s->h; y++){
+	for( x = 0; x < s->w; x++){
+		if(myArrayX[x][y] == 1 && myArrayX[x+1][y] == 0){
+			for(i = x+1 ; myArrayX[i][y] == 0 && i< s->w; i++){
+				myArrayX[i][y]= 1;
 				}
 			}		
 	
@@ -67,11 +67,11 @@ void Bloc(SDL_Surface *s)
 	/* BLOC DE TEXTE */
        for(x = 0; x < s->w; x++) {
                 for(y = 0; y < s->h; y++) {
-                        if(myArrayX[x][y] == 1 &&  myArrayY[x][y] == 1)
-                        {putpix(s, x, y, SDL_MapRGB(s->format, 0, 0, 0));}
+                     if(myArrayX[x][y] == 1 &&  myArrayY[x][y] == 1)
+                       {putpix(s, x, y, SDL_MapRGB(s->format, 0, 0, 0));}
 			
-                        else
-                        {putpix(s, x, y, SDL_MapRGB(s->format, 255, 255, 255));}
+                     else
+                      {putpix(s, x, y, SDL_MapRGB(s->format, 255, 255, 255));}
                 }
         }
 
@@ -81,9 +81,9 @@ void Bloc(SDL_Surface *s)
 
 	for(i = 0; i < s->h; i++){
                 for (j = 0; j < s->w
-                            && (getpix(s,j,i) == SDL_MapRGB(s->format,255,255,255))
-			    &&(getpix(s,j,i+6) == SDL_MapRGB(s->format,255,255,255)) ;
-                            j++);
+                    && (getpix(s,j,i) == SDL_MapRGB(s->format,255,255,255))
+		    &&(getpix(s,j,i+6) == SDL_MapRGB(s->format,255,255,255));
+                    j++);
 
                 if(j == s->w){	
 			DrawLine(s, 0, i, s->w); 
@@ -94,27 +94,26 @@ void Bloc(SDL_Surface *s)
 
 	for(i = 0; i < s->w; i++){
                 for (j = 0; j < s->h
-                            && ((getpix(s,i,j) == SDL_MapRGB(s->format,255,255,255))
-                            ||(getpix(s,i,j) == SDL_MapRGB(s->format,0,250,0))); 
-			    j++);
+                    && ((getpix(s,i,j) == SDL_MapRGB(s->format,255,255,255))
+                    ||(getpix(s,i,j) == SDL_MapRGB(s->format,0,250,0))); 
+		    j++);
 
                 if(j == s->h){
                            DrawColumn(s, i, 0, s->h);
                 }
         }
 
-/*	for(i = 0; i < s->w; i++){
-		for(j = 0; j <s->h; j++){
-			if(((getpix(s,i,j) == SDL_MapRGB(s->format,255,255,255))
-			    &&(getpix(s,i-1,j) == SDL_MapRGB(s->format,0,250,0)))
-		            &&(getpix(s,i,j-1) == SDL_MapRGB(s->format,0,250,0)))
-				{	
-					
-					bloc_tab[*sizetab].xb = i;
-					bloc_tab[*sizetab].yb = j;
-					//printf("%d", bloc_tab[*sizetab]);
-					*sizetab= *sizetab + 1;
-					//putpix(s, i, j, SDL_MapRGB(s->format, 0, 0, 250));}
+/* for(i = 0; i < s->w; i++){
+	for(j = 0; j <s->h; j++){
+		if(((getpix(s,i,j) == SDL_MapRGB(s->format,255,255,255))
+		   &&(getpix(s,i-1,j) == SDL_MapRGB(s->format,0,250,0)))
+		   &&(getpix(s,i,j-1) == SDL_MapRGB(s->format,0,250,0)))
+			{		
+			bloc_tab[*sizetab].xb = i;
+			bloc_tab[*sizetab].yb = j;
+			//printf("%d", bloc_tab[*sizetab]);
+			*sizetab= *sizetab + 1;
+			//putpix(s, i, j, SDL_MapRGB(s->format, 0, 0, 250));}
 				}
 			}
 	}*/

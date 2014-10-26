@@ -15,13 +15,13 @@ void binarization(SDL_Surface *s)
 				myArray[x][y]=0;
 		}
 	}  
-	for(x = 0; x < s->w; x++) {
-		for(y = 0; y < s->h; y++) {
-			if(myArray[x][y]==1)
-			{putpix(s, x, y, SDL_MapRGB(s->format, 0, 0, 0));}
+  for(x = 0; x < s->w; x++) {
+      for(y = 0; y < s->h; y++) {
+	 if(myArray[x][y]==1)
+	   {putpix(s, x, y, SDL_MapRGB(s->format, 0, 0, 0));}
 
-			else
-			{putpix(s, x, y, SDL_MapRGB(s->format, 255, 255, 255));}
+	else
+	   {putpix(s, x, y, SDL_MapRGB(s->format, 255, 255, 255));}
 		}
 	}
 }

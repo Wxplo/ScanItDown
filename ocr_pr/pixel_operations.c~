@@ -2,7 +2,7 @@
 
 Uint32 getpix(SDL_Surface *s, int x, int y)
 {
-        Uint8 *p = (Uint8 *)s->pixels + y * s->pitch + x * s->format->BytesPerPixel;
+  Uint8 *p = (Uint8 *)s->pixels + y * s->pitch + x * s->format->BytesPerPixel;
 
         switch(s->format->BytesPerPixel)
         {
@@ -26,7 +26,7 @@ Uint32 getpix(SDL_Surface *s, int x, int y)
 
 void putpix(SDL_Surface *s, int x, int y, Uint32 pix)
 {
-        Uint8 *p = (Uint8 *)s->pixels + y * s->pitch + x * s->format->BytesPerPixel;
+  Uint8 *p = (Uint8 *)s->pixels + y * s->pitch + x * s->format->BytesPerPixel;
 
         switch(s->format->BytesPerPixel)
         {

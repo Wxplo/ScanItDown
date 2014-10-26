@@ -235,7 +235,7 @@ int main()
 	struct Bloc Bloc_tab2[10000];
 
 	/*Renseigne le nom de l'image*/
-	printf("\nEntrez le nom du fichier BMP : ");
+	printf("\nEntrez le nom du fichier : ");
 	fgets(filename_in, sizeof filename_in, stdin);
 	filename_in[strlen(filename_in) - 1] = 0;
 	printf("\nEntrez le nom du fichier de sortie: ");
