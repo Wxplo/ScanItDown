@@ -4,6 +4,6 @@
 #include <stdio.h>
 #include <SDL/SDL.h>
 
-void binarization(SDL_Surface *s);
+void binarisation(SDL_Surface *s);
 void grayscale(SDL_Surface *s);
 #endif

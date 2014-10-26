@@ -1,0 +1,23 @@
+Instruction pour compiler et lancer OCR.c
+
+-Ouvrir le terminal
+
+-Rendez vous dans le dossier coutenant OCR.c (utilisez la commande cd)
+
+-Ecrivez dans le terminal "make OCR" (le makefile étant correctement configuer, OCR.c se compile sans erreur)
+
+-Pour lancer OCR, écrivez dans le terminal "./OCR"
+
+-Suivez les instructions à l'écran
+
+Instruction pour compiler et lancer le xor.c
+
+-Ouvrir le terminal
+
+-Rendez vous dans le dossier coutenant xor.c (utilisez la commande cd)
+
+-Ecrivez dans le terminal "make xor" (le makefile étant correctement configuer, xor.c se compile sans erreur)
+
+-Pour lancer OCR, écrivez dans le terminal "./xor"
+
+-Suivez les instructions à l'écran
