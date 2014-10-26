@@ -32,12 +32,12 @@ int yb;
 int ye;
 };
 
-int segline(SDL_Surface *img,struct line *line_tab,int *sizetab );
-int segletter(SDL_Surface *img,struct line line, struct letter *letter_tab, int *sizetab);
+int segline(SDL_Surface *img,struct line *line_tab,int *sizetab,struct Bloc Bloc );
+int segletter(SDL_Surface *img,struct line line, struct letter *letter_tab, int *sizetab,struct Bloc Bloc);
 int segblocY (SDL_Surface *img, struct blocY *blocY_tab,int bloc_tabsize);
 int segblocX (SDL_Surface *img, struct blocX *blocX_tab,int bloc_tabsize);
 int segBloc(SDL_Surface *img, struct blocX *blocX_tab,int sizeblocX, struct blocY *blocY_tab,int sizeblocY, struct Bloc *Bloc_tab, int bloc_tabsize);
-
+int segBloc2(SDL_Surface *img, struct Bloc *Bloc_tab,int Bloc_size, int bloc_tabsize);
 //int segletter(SDL_Surface *img,struct line line);
 
 #endif
