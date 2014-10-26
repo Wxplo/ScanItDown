@@ -65,7 +65,6 @@ int segline(SDL_Surface *img,struct line *line_tab,int *sizetab,struct Bloc Bloc
 int segletter(SDL_Surface *img,struct line line, struct letter *letter_tab, int *sizetab,struct Bloc Bloc)
 {
 	int x,y ;
-	int i ;
 	int onLetter=0;
 	for(x=Bloc.xb ; x <Bloc.xe; x++)
 	{
@@ -161,9 +160,10 @@ int segBloc(SDL_Surface *img, struct blocX *blocX_tab,int sizeblocX, struct bloc
 {
 	int x,y;
 	int i=0;
-	int j,k;
 	int onBlocx=0;
-	int onBlocy=0;
+	blocX_tab[sizeblocX+1].ye =3;
+	sizeblocY +=0;
+//	int onBlocy=0;
 	for(i=0; i<=sizeblocX;i++) //On détecte y grace à segBlocx
 	{
 		//for(y=blocY_tab[i].xb; y<=blocY_tab[i].xe;y++)
@@ -231,7 +231,7 @@ int segBloc2(SDL_Surface *img, struct Bloc *Bloc_tab,int Bloc_size, int bloc_tab
 	return bloc_tabsize;
 }
 
-int main(int argc, char **argv)
+int main()
 {
 	//Variable
 	char filename_in[256];
@@ -294,7 +294,7 @@ int main(int argc, char **argv)
 	int sizeblocX=	segblocX(imgforseg,blocX_tab,0);
 	int sizeBloc = segBloc(imgforseg,blocX_tab,sizeblocX,blocY_tab,sizeblocY,Bloc_tab,0);
 	int sizeBloc2= segBloc2(imgforseg,Bloc_tab,sizeBloc,0);
-
+	sizeBloc2 +=0;
 
 	SDL_SaveBMP(imgforseg,"segbloc");
 	
@@ -310,18 +310,19 @@ int main(int argc, char **argv)
 
 	
 	SDL_SaveBMP(bmp,filename_out);
-	SDL_BlitSurface(bmp, 0, scr, 0);
+//	SDL_BlitSurface(bmp, 0, scr, 0);
 	//SDL_BlitSurface(imgforseg, 0, scr, 0);
 	//SDL_Flip(scr);
-
+	SDL_FreeSurface(bmp);
+	SDL_FreeSurface(imgforseg);
+	SDL_Quit();
+	return 0;
 	while(1) {
 		SDL_Event e;
 		SDL_WaitEvent(&e);
 		if(e.type == SDL_QUIT)
 			break;
 	}
-	SDL_FreeSurface(bmp);
-	SDL_FreeSurface(imgforseg);
-	SDL_Quit();
-	return 0;
+	
+	
 }
