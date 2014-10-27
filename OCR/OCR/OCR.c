@@ -158,8 +158,7 @@ struct blocY *blocY_tab,int sizeblocY, struct Bloc *Bloc_tab, int bloc_tabsize)
 		for (x=blocY_tab[i].xb;
                     (getpix(img,x,y)==SDL_MapRGB(img->format,255,255,255))
                      &&(getpix(img,x,y+7)==SDL_MapRGB(img->format,255,255,255))
-                     && (x< blocY_tab[i].xe);
-                                x++);
+                     && (x< blocY_tab[i].xe); x++)
 			if(x!= blocY_tab[i].xe && onBlocx==0)
 			{
 			  DrawLineB(img,blocY_tab[i].xb,y,blocY_tab[i].xe);
@@ -269,8 +268,8 @@ int main()
 
 	int sizeblocY=	segblocY(imgforseg,blocY_tab,0);
 	int sizeblocX=	segblocX(imgforseg,blocX_tab,0);
-	int sizeBloc= segBloc(imgforseg,blocX_tab,sizeblocX,blocY_tab,sizebloc,
-			      Bloc_tab,0);
+	int sizeBloc= segBloc(imgforseg,blocX_tab,sizeblocX,blocY_tab,sizeblocY
+	,Bloc_tab,0);
 	int sizeBloc2= segBloc2(imgforseg,Bloc_tab,sizeBloc,0);
 	sizeBloc2 +=0;
 	SDL_SaveBMP(imgforseg,"segbloc");
