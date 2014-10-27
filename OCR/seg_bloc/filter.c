@@ -3,7 +3,7 @@
 void binarisation(SDL_Surface *s)
 {
 	/*Parcours l'image et putpix(noir ou blanc) */
-	unsigned int x, y,currentpix;
+	int x, y,currentpix;
 	Uint8 r, g, b;
 	int myArray[s->w][s->h];
 	for(x = 0; x < s->w; x++) {

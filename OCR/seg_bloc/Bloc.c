@@ -10,14 +10,13 @@
 
 void Bloc(SDL_Surface *s)
 {
-        //Parcours l'image et putpix(noir ou blanc) 
-        unsigned int x, y,currentpix;
+        int x, y,currentpix;
         Uint8 r, g, b;
         int myArrayX[s->w][s->h];
 	int myArrayY[s->w][s->h];
 	
 
-	//Binarisation
+	//Binarization
         for(x = 0; x < s->w; x++) {
                 for(y = 0; y < s->h; y++) {
                         SDL_GetRGB(getpix(s, x, y), s->format, &r, &g, &b);
@@ -35,8 +34,6 @@ void Bloc(SDL_Surface *s)
 
 	//Lissage horizontal
 	int i,j;
-//	int nb_space = 0;
-	int threshold = 20;
 
 for(y = 0; y< s->h; y++){
 	for( x = 0; x < s->w; x++){
@@ -60,9 +57,6 @@ for(y = 0; y< s->h; y++){
                  }
 
          }
-	int size = 0;
-	struct letter *bloc_tab;
-	int *sizetab = &(size);
 		
 	/* BLOC DE TEXTE */
        for(x = 0; x < s->w; x++) {
@@ -122,7 +116,7 @@ for(y = 0; y< s->h; y++){
 
 }
 
-int main(int argc, char **argv)
+int main()
 {
 	//Variable
 	char filename_in[256];
